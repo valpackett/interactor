@@ -1,0 +1,3 @@
+PROJECT_NAME=interactor
+DOCS_REPO=myfreeweb/autodocs.git
+SSH_KEY_TRAVIS_ID=12e3fabc4782

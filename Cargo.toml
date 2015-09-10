@@ -1,0 +1,14 @@
+[package]
+name = "interactor"
+version = "0.1.0"
+authors = [ "Greg V <greg@unrelenting.technology>" ]
+keywords = [ "Console", "Terminal", "UI" ]
+description = "A library for simple (usually command-line) user interaction."
+license = "Unlicense"
+readme = "README.md"
+homepage = "https://github.com/myfreeweb/interactor"
+repository = "https://github.com/myfreeweb/interactor"
+documentation = "https://myfreeweb.github.io/autodocs/interactor/interactor"
+
+[lib]
+name = "interactor"
