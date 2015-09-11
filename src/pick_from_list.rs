@@ -1,3 +1,5 @@
+extern crate std;
+
 use std::io::{Read, Write, BufReader, BufRead};
 use std::fs::{File, OpenOptions};
 use std::process::{Command, Stdio};
