@@ -5,6 +5,8 @@ A [Rust] library for simple (usually command-line) user interaction.
 - (more coming soon)
 - Selecting an item from a list using an external menu program (usually a fuzzy finder) or a built-in simple menu
 
+[Rust]: https://www.rust-lang.org
+
 ## Menu program?
 
 A program that accepts a newline-separated list of items on `stdin`, presents a UI to the user (directly on `/dev/tty` if it's a CLI; can also be a GUI), and outputs the selected item on `stdout`.
@@ -33,7 +35,7 @@ fn main() {
         Ok(val) => { cmd = Command::new(val); Some(&mut cmd) },
         Err(_) => None
     };
-    let chosen_ext = pick_from_list(program, &["first", "second"], "").unwrap();
+    let chosen_ext = pick_from_list(program, &["first", "second"], "Selection: ").unwrap();
     println!("Congratulations, you chose '{}'!!", chosen_ext);
 }
 ```
