@@ -16,6 +16,7 @@ A program that accepts a newline-separated list of items on `stdin`, presents a 
 - [percol](https://github.com/mooz/percol) (Python)
 - [icepick](https://github.com/felipesere/icepick) (Rust)
 - [selecta](https://github.com/garybernhardt/selecta) (Ruby)
+- [hf](https://github.com/Refefer/hf) (Haskell)
 - [dmenu](http://tools.suckless.org/dmenu/) (C, **X11 GUI**)
 
 You should let the users of your application pick their own favorite tool as a config option.  
@@ -26,16 +27,9 @@ I propose the `$MENU` environment variable, like `$EDITOR`, as a place to look f
 ```rust
 extern crate interactor;
 use interactor::*;
-use std::process::Command;
-use std::env;
 
 fn main() {
-    let mut cmd;
-    let program = match env::var("MENU") {
-        Ok(val) => { cmd = Command::new(val); Some(&mut cmd) },
-        Err(_) => None
-    };
-    let chosen_ext = pick_from_list(program, &["first", "second"], "Selection: ").unwrap();
+    let chosen_ext = pick_from_list(default_menu_cmd().as_mut(), &["first", "second"], "Selection: ").unwrap();
     println!("Congratulations, you chose '{}'!!", chosen_ext);
 }
 ```

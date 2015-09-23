@@ -4,6 +4,7 @@ use std::io::{Read, Write, BufReader, BufRead};
 use std::fs::{File, OpenOptions};
 use std::process::{Command, Stdio};
 use std::str::FromStr;
+use std::env;
 
 fn pick_from_list_external(cmd: &mut Command, items: &[&str]) -> std::io::Result<String> {
     let process = try!(cmd.stdin(Stdio::piped()).stdout(Stdio::piped()).spawn());
@@ -49,5 +50,15 @@ pub fn pick_from_list(cmd: Option<&mut Command>, items: &[&str], prompt: &str) -
     match cmd {
         Some(command) => pick_from_list_external(command, items),
         None => pick_from_list_internal(items, prompt),
+    }
+}
+
+/// Returns the user's preferred menu program from the `MENU` environment variable if it exists.
+/// 
+/// Use `.as_mut()` on the returned value to turn in into an `Option<&mut Command>`.
+pub fn default_menu_cmd() -> Option<Command> {
+    match env::var("MENU") {
+        Ok(val) => Some(Command::new(val)),
+        Err(_) => None
     }
 }

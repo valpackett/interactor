@@ -1,3 +1,3 @@
-mod pick_from_list;
+pub use self::pick_from_list::*;
 
-pub use pick_from_list::*;
+mod pick_from_list;
