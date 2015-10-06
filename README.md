@@ -2,10 +2,13 @@
 
 A [Rust] library for simple (usually command-line) user interaction.
 
-- (more coming soon)
+- Reading input from the console with a callback for each byte (e.g. for displaying [colorhash256] for a password)
 - Selecting an item from a list using an external menu program (usually a fuzzy finder) or a built-in simple menu
 
+Requires Rust nightly.
+
 [Rust]: https://www.rust-lang.org
+[colorhash256]: https://github.com/myfreeweb/colorhash256
 
 ## Menu program?
 
@@ -15,6 +18,7 @@ A program that accepts a newline-separated list of items on `stdin`, presents a 
 - [peco](https://github.com/peco/peco) (Go)
 - [percol](https://github.com/mooz/percol) (Python)
 - [icepick](https://github.com/felipesere/icepick) (Rust)
+- [heatseeker](https://github.com/rschmitt/heatseeker) (Rust)
 - [selecta](https://github.com/garybernhardt/selecta) (Ruby)
 - [hf](https://github.com/Refefer/hf) (Haskell)
 - [dmenu](http://tools.suckless.org/dmenu/) (C, **X11 GUI**)
@@ -29,6 +33,11 @@ extern crate interactor;
 use interactor::*;
 
 fn main() {
+    let read_result = read_from_tty(|buf, b, tty| {
+        tty.write(&format!("({:?} | {})\n", buf, b).into_bytes());
+    }).unwrap();
+    println!("Read: {}", String::from_utf8(read_result).unwrap());
+
     let chosen_ext = pick_from_list(default_menu_cmd().as_mut(), &["first", "second"], "Selection: ").unwrap();
     println!("Congratulations, you chose '{}'!!", chosen_ext);
 }
