@@ -5,8 +5,6 @@ A [Rust] library for simple (usually command-line) user interaction.
 - Reading input from the console with a callback for each byte (e.g. for displaying [colorhash256] for a password)
 - Selecting an item from a list using an external menu program (usually a fuzzy finder) or a built-in simple menu
 
-Requires Rust nightly.
-
 [Rust]: https://www.rust-lang.org
 [colorhash256]: https://github.com/myfreeweb/colorhash256
 

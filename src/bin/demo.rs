@@ -3,7 +3,7 @@ use interactor::*;
 use std::io::Write;
 
 fn main() {
-    println!("Interactor demo.");
+    println!("Interactor demo. Type something:");
 
     let read_result = read_from_tty(|buf, b, tty| {
         tty.write(&format!("({:?} | {})\n", buf, b).into_bytes());
