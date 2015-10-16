@@ -20,6 +20,7 @@ A program that accepts a newline-separated list of items on `stdin`, presents a 
 - [selecta](https://github.com/garybernhardt/selecta) (Ruby)
 - [hf](https://github.com/Refefer/hf) (Haskell)
 - [dmenu](http://tools.suckless.org/dmenu/) (C, **X11 GUI**)
+- [rofi](https://github.com/DaveDavenport/rofi) (C, **X11 GUI**)
 
 You should let the users of your application pick their own favorite tool as a config option.  
 I propose the `$MENU` environment variable, like `$EDITOR`, as a place to look for user preference.
