@@ -2,6 +2,7 @@ extern crate interactor;
 use interactor::*;
 use std::io::Write;
 
+#[allow(unused_must_use)]
 fn main() {
     println!("Interactor demo. Type something:");
 

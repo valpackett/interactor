@@ -1,12 +1,13 @@
 extern crate std;
 
+use std::io;
 use std::io::{Read, Write, BufReader, BufRead};
 use std::fs::{File, OpenOptions};
 use std::process::{Command, Stdio};
 use std::str::FromStr;
 use std::env;
 
-fn pick_from_list_external(cmd: &mut Command, items: &[&str]) -> std::io::Result<String> {
+fn pick_from_list_external(cmd: &mut Command, items: &[&str]) -> io::Result<String> {
     let process = try!(cmd.stdin(Stdio::piped()).stdout(Stdio::piped()).spawn());
     {
         let mut process_in = process.stdin.unwrap();
@@ -19,7 +20,7 @@ fn pick_from_list_external(cmd: &mut Command, items: &[&str]) -> std::io::Result
     Ok(result.replace("\n", ""))
 }
 
-fn read_parse<T>(tty: &mut File, prompt: &str, min: T, max: T) -> std::io::Result<T> where T: FromStr + Ord {
+fn read_parse<T>(tty: &mut File, prompt: &str, min: T, max: T) -> io::Result<T> where T: FromStr + Ord {
     try!(tty.write_all(prompt.as_bytes()));
     let mut reader = BufReader::new(tty);
     let mut result = String::new();
@@ -30,7 +31,7 @@ fn read_parse<T>(tty: &mut File, prompt: &str, min: T, max: T) -> std::io::Resul
     }
 }
 
-fn pick_from_list_internal(items: &[&str], prompt: &str) -> std::io::Result<String> {
+fn pick_from_list_internal(items: &[&str], prompt: &str) -> io::Result<String> {
     let mut tty = try!(OpenOptions::new().read(true).write(true).open("/dev/tty"));
     let pad_len = ((items.len() as f32).log10().floor() + 1.0) as usize;
     for (i, item) in items.iter().enumerate() {
@@ -46,7 +47,7 @@ fn pick_from_list_internal(items: &[&str], prompt: &str) -> std::io::Result<Stri
 /// Otherwise, a built-in simple number-based command-line menu (on `/dev/tty`) will be used, with a `prompt`.
 ///
 /// Note: an external program might return something that's not in the list!
-pub fn pick_from_list(cmd: Option<&mut Command>, items: &[&str], prompt: &str) -> std::io::Result<String> {
+pub fn pick_from_list(cmd: Option<&mut Command>, items: &[&str], prompt: &str) -> io::Result<String> {
     match cmd {
         Some(command) => pick_from_list_external(command, items),
         None => pick_from_list_internal(items, prompt),
