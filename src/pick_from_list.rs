@@ -7,12 +7,12 @@ use std::process::{Command, Stdio};
 use std::str::FromStr;
 use std::env;
 
-fn pick_from_list_external(cmd: &mut Command, items: &[&str]) -> io::Result<String> {
+fn pick_from_list_external<T: AsRef<str>>(cmd: &mut Command, items: &[T]) -> io::Result<String> {
     let process = try!(cmd.stdin(Stdio::piped()).stdout(Stdio::piped()).spawn());
     {
         let mut process_in = process.stdin.unwrap();
         for item in items {
-            try!(process_in.write_all((item.replace("\n", "") + "\n").as_bytes()))
+            try!(process_in.write_all((item.as_ref().replace("\n", "") + "\n").as_bytes()))
         }
     }
     let mut result = String::new();
@@ -31,14 +31,14 @@ fn read_parse<T>(tty: &mut File, prompt: &str, min: T, max: T) -> io::Result<T> 
     }
 }
 
-fn pick_from_list_internal(items: &[&str], prompt: &str) -> io::Result<String> {
+fn pick_from_list_internal<T: AsRef<str>>(items: &[T], prompt: &str) -> io::Result<String> {
     let mut tty = try!(OpenOptions::new().read(true).write(true).open("/dev/tty"));
     let pad_len = ((items.len() as f32).log10().floor() + 1.0) as usize;
     for (i, item) in items.iter().enumerate() {
-        try!(tty.write_all(format!("{1:0$}. {2}\n", pad_len, i + 1, item.replace("\n", "")).as_bytes()))
+        try!(tty.write_all(format!("{1:0$}. {2}\n", pad_len, i + 1, item.as_ref().replace("\n", "")).as_bytes()))
     }
     let idx = try!(read_parse::<usize>(&mut tty, prompt, 1, items.len())) - 1;
-    Ok(items[idx].to_string())
+    Ok(items[idx].as_ref().to_string())
 }
 
 /// Asks the user to select an item from a list.
@@ -47,7 +47,7 @@ fn pick_from_list_internal(items: &[&str], prompt: &str) -> io::Result<String> {
 /// Otherwise, a built-in simple number-based command-line menu (on `/dev/tty`) will be used, with a `prompt`.
 ///
 /// Note: an external program might return something that's not in the list!
-pub fn pick_from_list(cmd: Option<&mut Command>, items: &[&str], prompt: &str) -> io::Result<String> {
+pub fn pick_from_list<T: AsRef<str>>(cmd: Option<&mut Command>, items: &[T], prompt: &str) -> io::Result<String> {
     match cmd {
         Some(command) => pick_from_list_external(command, items),
         None => pick_from_list_internal(items, prompt),
