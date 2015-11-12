@@ -8,6 +8,7 @@ A [Rust] library for simple (usually command-line) user interaction.
 [Rust]: https://www.rust-lang.org
 [colorhash256]: https://github.com/myfreeweb/colorhash256
 
+
 ## Menu program?
 
 A program that accepts a newline-separated list of items on `stdin`, presents a UI to the user (directly on `/dev/tty` if it's a CLI; can also be a GUI), and outputs the selected item on `stdout`.
