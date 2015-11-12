@@ -11,5 +11,5 @@ repository = "https://github.com/myfreeweb/interactor"
 documentation = "https://myfreeweb.github.io/autodocs/interactor/interactor"
 
 [dependencies]
-libc = "*"
-termios = "*"
+libc = "0"
+termios = "0"

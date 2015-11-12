@@ -58,8 +58,5 @@ pub fn pick_from_list<T: AsRef<str>>(cmd: Option<&mut Command>, items: &[T], pro
 /// 
 /// Use `.as_mut()` on the returned value to turn in into an `Option<&mut Command>`.
 pub fn default_menu_cmd() -> Option<Command> {
-    match env::var("MENU") {
-        Ok(val) => Some(Command::new(val)),
-        Err(_) => None
-    }
+    env::var_os("MENU").map(|s| Command::new(s))
 }
