@@ -1,6 +1,6 @@
 [package]
 name = "interactor"
-version = "0.1.0"
+version = "0.1.1"
 authors = [ "Greg V <greg@unrelenting.technology>" ]
 keywords = [ "Console", "Terminal", "UI" ]
 description = "A library for simple (usually command-line) user interaction."
