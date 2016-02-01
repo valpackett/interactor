@@ -1,8 +1,9 @@
 extern crate std;
 
-use std::io;
+use std::{io,fs};
 use std::io::{Read, Write, BufReader, BufRead};
 use std::fs::{File, OpenOptions};
+use std::path::PathBuf;
 use std::process::{Command, Stdio};
 use std::str::FromStr;
 use std::env;
@@ -51,6 +52,29 @@ pub fn pick_from_list<T: AsRef<str>>(cmd: Option<&mut Command>, items: &[T], pro
     match cmd {
         Some(command) => pick_from_list_external(command, items),
         None => pick_from_list_internal(items, prompt),
+    }
+}
+
+/// Asks the user to select a file from the filesystem, starting at directory `path`.
+/// 
+/// Requires a function that produces the command as `cmd`, because commands aren't cloneable.
+pub fn pick_file<C>(cmd: C, path: PathBuf) -> io::Result<PathBuf> where C: Fn() -> Option<Command> {
+    let mut curpath = path;
+    loop {
+        let mut items = try!(fs::read_dir(curpath.clone())).map(|e| {
+            e.ok().and_then(|ee| ee.file_name().to_str().map(|eee| eee.to_string())).unwrap_or("***PATH ENCODING ERROR***".to_string())
+        }).collect::<Vec<_>>();
+        items.insert(0, "..".to_string());
+        items.insert(0, ".".to_string());
+        let pick = try!(pick_from_list(cmd().as_mut(), &items[..], curpath.to_str().unwrap_or("***PATH ENCODING ERROR***")));
+        let newpath = try!(curpath.join(pick).canonicalize());
+        if let Ok(metadata) = newpath.metadata() {
+            if metadata.is_dir() {
+                curpath = newpath;
+            } else {
+                return Ok(newpath);
+            }
+        }
     }
 }
 
