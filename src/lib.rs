@@ -1,3 +1,5 @@
+extern crate termios;
+
 pub use self::pick_from_list::*;
 pub use self::input::*;
 
