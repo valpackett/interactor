@@ -1,5 +1,3 @@
-extern crate std;
-
 use std::{io,fs};
 use std::io::{Read, Write, BufReader, BufRead};
 use std::fs::{File, OpenOptions};
