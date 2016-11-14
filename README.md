@@ -31,6 +31,8 @@ I propose the `$MENU` environment variable, like `$EDITOR`, as a place to look f
 
 ```rust
 extern crate interactor;
+
+use std::io::Write;
 use interactor::*;
 
 fn main() {
